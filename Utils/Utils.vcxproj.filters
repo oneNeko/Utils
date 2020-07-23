@@ -18,7 +18,16 @@
     <ClInclude Include="uuid\uuid.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="hash\md5.h">
+    <ClInclude Include="hash_util\md5.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="string_util\string_util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="string_util\cstring_util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="log_util\log_util.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -26,7 +35,7 @@
     <ClCompile Include="test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="hash\md5.cpp">
+    <ClCompile Include="hash_util\md5.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

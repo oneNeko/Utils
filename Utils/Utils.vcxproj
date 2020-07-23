@@ -139,11 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="hash\md5.h" />
+    <ClInclude Include="hash_util\md5.h" />
+    <ClInclude Include="log_util\log_util.h" />
+    <ClInclude Include="string_util\cstring_util.h" />
+    <ClInclude Include="string_util\string_util.h" />
     <ClInclude Include="uuid\uuid.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="hash\md5.cpp" />
+    <ClCompile Include="hash_util\md5.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

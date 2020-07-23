@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include <windows.h>
-namespace uuid {
+namespace Utils {
+	//通过cmd获取UUID
 	BOOL getBoisIDByCmd(char* lpszBaseBoard) {
 		const long MAX_COMMAND_SIZE = 1000; // 命令行输出缓冲大小	
 
