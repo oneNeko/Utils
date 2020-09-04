@@ -10,6 +10,10 @@ int main() {
 		std::cout << "获取失败";
 	}*/
 	std::string str = "程序启动！";
-	std::cout<<CLog::logout("File\\Log","1",str);
+	std::string path = "File\\Log";
+	std::string ip = "192.168.16.23";
+	for (int i = 0; i < 100; i++) {
+		CLog::LogOut(path.c_str(), 1, "程序启动，ip=%s,data=%d", ip.c_str(), 12);
+	}
 	return 0;
 }

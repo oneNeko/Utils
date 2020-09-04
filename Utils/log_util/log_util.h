@@ -8,8 +8,9 @@
 #include <ctime>
 #include <locale>
 #include <codecvt>
+using namespace std;
 namespace CLog {
-	using namespace std;
+	
 
 	//去除末尾反斜杠
 	int path_rm_slash(string _source,string &_dest) {
@@ -40,19 +41,20 @@ namespace CLog {
 		return 0;
 	}
 
+	//获取时间
 	int get_time(string& detail_time,string& day_time) {
-		struct tm* newTime;
+		struct tm* newTime = new tm();
 		time_t      szClock;
 		time(&szClock);
-		newTime = localtime(&szClock);
+		localtime_s(newTime,&szClock);
 
 		char m_time[64] = { 0 };
 		
-		sprintf(m_time, "%4d%02d%02d", \
+		sprintf_s(m_time, "%4d%02d%02d", \
 			newTime->tm_year + 1900, newTime->tm_mon+1, newTime->tm_mday);
 		day_time = m_time;
 
-		sprintf(m_time, "%4d-%02d-%02d %02d:%02d:%02d", \
+		sprintf_s(m_time, "%4d-%02d-%02d %02d:%02d:%02d", \
 			newTime->tm_year+1900,newTime->tm_mon+1,newTime->tm_mday, \
 			newTime->tm_hour,newTime->tm_min,newTime->tm_sec);	
 		detail_time = m_time;
@@ -63,27 +65,31 @@ namespace CLog {
 	// 需包含locale、string头文件、使用setlocale函数。
 	std::wstring StringToWstring(const std::string str)
 	{// string转wstring
-		unsigned len = str.size() * 2;// 预留字节数
+		unsigned count = str.size() * 2;// 预留字节数
+		size_t pReturnValue = 0;
 		setlocale(LC_CTYPE, "");     //必须调用此函数
-		wchar_t* p = new wchar_t[len];// 申请一段内存存放转换后的字符串
-		mbstowcs(p, str.c_str(), len);// 转换
-		std::wstring str1(p);
-		delete[] p;// 释放申请的内存
+		wchar_t* wcstr = new wchar_t[count];// 申请一段内存存放转换后的字符串
+		mbstowcs_s(&pReturnValue, wcstr,strlen(str.c_str()), str.c_str(), count);// 转换
+		std::wstring str1(wcstr);
+		delete[] wcstr;// 释放申请的内存
 		return str1;
 	}
 
+	// wstring转string
 	std::string WstringToString(const std::wstring str)
-	{// wstring转string
-		unsigned len = str.size() * 4;
+	{
+		size_t count = str.size() * 4;
+		size_t pReturnValue = 0;
 		setlocale(LC_CTYPE, "");
-		char* p = new char[len];
-		wcstombs(p, str.c_str(), len);
-		std::string str1(p);
-		delete[] p;
-		return str1;
+		char* mbstr = new char[count];
+		wcstombs_s(&pReturnValue, mbstr, strlen(mbstr),str.c_str(), count);
+		std::string res(mbstr);
+		delete[] mbstr;
+		return res;
 	}
 
-	int logout(string _path, string _level, string _text){
+	//
+	int log(string _path, int _level, string _text){
 		ckdir_util(_path.c_str());
 
 		string m_detailTime = "";
@@ -102,15 +108,18 @@ namespace CLog {
 		return 0;
 	}
 
-	int sslogout(const char* _Format,...) {
-		const int BufSize = 2048;
-		char szMsg[BufSize];
+	//接口函数
+	int LogOut(IN const char* _path, IN int _level, IN const char* _Format, ...) {
+		const int BufSize = max_length;
+		char szMsg[BufSize] = { 0 };
 
 		va_list args; 	//格式化消息
 
 		va_start(args, _Format);
-		vsprintf(szMsg, _Format, args);	 //vsprintf_s BufSize - strlen(szMsg),
+		vsprintf_s(szMsg, max_length, _Format, args);	 //vsprintf_s BufSize - strlen(szMsg),
 		va_end(args);
+
+		log(string(_path), _level, string(szMsg));
 
 		return 0;
 	}
